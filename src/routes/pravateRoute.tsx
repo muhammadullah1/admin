@@ -13,6 +13,7 @@ const PrivateRoute: FC<RouteProps> = props => {
   return logged ? ((props.element as React.ReactElement)) 
   : (
     <Result
+     style={{backgroundColor: '#1f1f1f'}}
       status="403"
       title="403"
       subTitle={'Sorry, you are not authorized to access this page.'}

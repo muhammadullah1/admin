@@ -1,15 +1,15 @@
 import type { LoginParams } from '@/interface/user/login';
 import type { FC } from 'react';
 import './index.less';
-import { Button, Form, Input, Typography} from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { formatSearch } from '@/utils/formatSearch';
 import { loginAsync } from '../../stores/user.action';
 
 const initialValues: LoginParams = {
-  username: 'guest',
-  password: 'guest',
+  email: '',
+  password: '',
 };
 
 const LoginForm: FC = () => {
@@ -35,7 +35,7 @@ const LoginForm: FC = () => {
       <h2>Admin Login</h2>
 
         <Form.Item
-          name="username"
+          name="email"
           rules={[
             {
               required: true,
@@ -44,7 +44,7 @@ const LoginForm: FC = () => {
           ]}
         >
           <Input
-            placeholder={'Username'}
+            placeholder={'email'}
           />
         </Form.Item>
         <Form.Item

@@ -61,21 +61,11 @@ const styles = css`
       .ant-table-container {
         display: flex;
         flex-direction: column;
-        .ant-table-body {
-          flex: 1;
-          table {
-            height: 100%;
-          }
-        }
+
         .ant-table-cell {
-         padding: 8px 20px;
+         padding: 15px 20px;
         }
 
-        .ant-table-thead {
-        .ant-table-cell {
-         padding: 8px 20px;
-        }
-        }
       }
     }
 

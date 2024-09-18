@@ -1,21 +1,19 @@
-import type { MenuChild, MenuList } from '@/interface/layout/menu.interface';
 import type { FC } from 'react';
 import './index.less';
 
 import { Drawer, Layout, theme as antTheme } from 'antd';
-import { Suspense, useCallback, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router';
 
-import { getMenuList } from '@/api/layout.api';
 import { setUserItem } from '@/stores/user.store';
 import { getFirstPathCode } from '@/utils/getFirstPathCode';
 import { getGlobalState } from '@/utils/getGloabal';
 
-import { useGuide } from '../guide/useGuide';
 import HeaderComponent from './header';
 import MenuComponent from './menu';
 import TagsView from './tagView';
+import { mockMenuList } from '../../constants/menu';
 
 const { Sider, Content } = Layout;
 const WIDTH = 992;
@@ -24,13 +22,11 @@ const LayoutPage: FC = () => {
   const location = useLocation();
   const [openKey, setOpenkey] = useState<string>();
   const [selectedKey, setSelectedKey] = useState<string>(location.pathname);
-  const [menuList, setMenuList] = useState<MenuList>([]);
-  const { device, collapsed, newUser } = useSelector(state => state.user);
+  const { device, collapsed } = useSelector(state => state.user);
   const token = antTheme.useToken();
 
   const isMobile = device === 'MOBILE';
   const dispatch = useDispatch();
-  const { driverStart } = useGuide();
 
   useEffect(() => {
     const code = getFirstPathCode(location.pathname);
@@ -47,38 +43,6 @@ const LayoutPage: FC = () => {
     );
   };
 
-  const initMenuListAll = (menu: MenuList) => {
-    const MenuListAll: MenuChild[] = [];
-
-    menu.forEach(m => {
-      if (!m?.children?.length) {
-        MenuListAll.push(m);
-      } else {
-        m?.children.forEach(mu => {
-          MenuListAll.push(mu);
-        });
-      }
-    });
-
-    return MenuListAll;
-  };
-
-  const fetchMenuList = useCallback(async () => {
-    const { status, result } = await getMenuList();
-
-    if (status) {
-      setMenuList(result);
-      dispatch(
-        setUserItem({
-          menuList: initMenuListAll(result),
-        }),
-      );
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    fetchMenuList();
-  }, [fetchMenuList]);
 
   useEffect(() => {
     window.onresize = () => {
@@ -95,10 +59,6 @@ const LayoutPage: FC = () => {
     };
   }, [dispatch]);
 
-  useEffect(() => {
-    newUser && driverStart();
-  }, [newUser]);
-
   return (
     <Layout className="layout-page">
       <HeaderComponent collapsed={collapsed} toggle={toggle} />
@@ -114,7 +74,7 @@ const LayoutPage: FC = () => {
             breakpoint="md"
           >
             <MenuComponent
-              menuList={menuList}
+              menuList={mockMenuList}
               openKey={openKey}
               onChangeOpenKey={k => setOpenkey(k)}
               selectedKey={selectedKey}
@@ -131,7 +91,7 @@ const LayoutPage: FC = () => {
             open={!collapsed}
           >
             <MenuComponent
-              menuList={menuList}
+              menuList={mockMenuList}
               openKey={openKey}
               onChangeOpenKey={k => setOpenkey(k)}
               selectedKey={selectedKey}

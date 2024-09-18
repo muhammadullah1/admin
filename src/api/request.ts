@@ -1,11 +1,8 @@
 import type { AxiosRequestConfig, Method } from 'axios';
-
 import { message as $message } from 'antd';
 import axios from 'axios';
-
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
-// import { history } from '@/routes/history';
 
 const axiosInstance = axios.create({
   timeout: 6000,
@@ -27,23 +24,19 @@ axiosInstance.interceptors.request.use(
         loading: false,
       }),
     );
-    Promise.reject(error);
+   return Promise.reject(error);
   },
 );
 
 axiosInstance.interceptors.response.use(
-  config => {
+  response => {
     store.dispatch(
       setGlobalState({
         loading: false,
       }),
     );
-
-    if (config?.data?.message) {
-      // $message.success(config.data.message)
-    }
-
-    return config?.data;
+    
+    return response?.data;
   },
   error => {
     store.dispatch(
@@ -51,12 +44,11 @@ axiosInstance.interceptors.response.use(
         loading: false,
       }),
     );
-    // if needs to navigate to login page when request exception
-    // history.replace('/login');
-    let errorMessage = '系统异常';
+
+    let errorMessage = 'Login first';
 
     if (error?.message?.includes('Network Error')) {
-      errorMessage = '网络错误，请检查您的网络';
+      errorMessage = 'Network Error';
     } else {
       errorMessage = error?.message;
     }
@@ -65,20 +57,20 @@ axiosInstance.interceptors.response.use(
     error.message && $message.error(errorMessage);
 
     return {
-      status: false,
+      success: false,
       message: errorMessage,
-      result: null,
+      data: null,
     };
   },
 );
 
-export type Response<T = any> = {
-  status: boolean;
+export type Response = {
+  success: boolean;
   message: string;
-  result: T;
+  data: any;
 };
 
-export type MyResponse<T = any> = Promise<Response<T>>;
+export type MyResponse<T = any> = Promise<Response>;
 
 /**
  *
@@ -91,11 +83,7 @@ export const request = <T = any>(
   url: string,
   data?: any,
   config?: AxiosRequestConfig,
-): MyResponse<T> => {
-  // const prefix = '/api'
-  const prefix = '';
-
-  url = prefix + url;
+): MyResponse => {
 
   if (method === 'post') {
     return axiosInstance.post(url, data, config);

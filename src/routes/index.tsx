@@ -11,7 +11,7 @@ import WrapperRouteComponent from './config';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
 const Product = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/product'));
-const Guide = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/guide'));
+const AddProduct = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/product/add'));
 const RoutePermission = lazy(() => import(/* webpackChunkName: "route-permission"*/ '@/pages/permission/route'));
 const FormPage = lazy(() => import(/* webpackChunkName: "form'"*/ '@/pages/components/form'));
 const TablePage = lazy(() => import(/* webpackChunkName: "table'"*/ '@/pages/components/table'));
@@ -34,7 +34,7 @@ const routeList: RouteObject[] = [
   },
   {
     path: '/',
-    element: <WrapperRouteComponent element={<LayoutPage />} title="" />,
+    element: <WrapperRouteComponent element={<LayoutPage />} title="" auth/>,
     children: [
       {
         path: '',
@@ -49,8 +49,8 @@ const routeList: RouteObject[] = [
         element: <WrapperRouteComponent element={<Product />} title="Product" />,
       },
       {
-        path: 'guide',
-        element: <WrapperRouteComponent element={<Guide />} title="Guide" />,
+        path: 'products/add',
+        element: <WrapperRouteComponent element={<AddProduct />} title="Add Product" />,
       },
       {
         path: 'permission/route',

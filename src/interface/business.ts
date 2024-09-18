@@ -4,5 +4,4 @@ export interface BuniesssUser {
   lastName: string;
   age: number;
   address: string;
-  tags: string[];
 }

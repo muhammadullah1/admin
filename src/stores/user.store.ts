@@ -7,11 +7,9 @@ import { getGlobalState } from '@/utils/getGloabal';
 const initialState: UserState = {
   ...getGlobalState(),
   noticeCount: 0,
-  newUser: JSON.parse(localStorage.getItem('newUser')!) ?? true,
   logged: localStorage.getItem('t') ? true : false,
-  menuList: [],
-  username: localStorage.getItem('username') || '',
-  role: (localStorage.getItem('username') || '') as Role,
+  email: localStorage.getItem('email') || '',
+  role: (localStorage.getItem('email') || '') as Role,
 };
 
 const userSlice = createSlice({
@@ -19,10 +17,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserItem(state, action: PayloadAction<Partial<UserState>>) {
-      const { username } = action.payload;
+      const { email } = action.payload;
 
-      if (username !== state.username) {
-        localStorage.setItem('username', action.payload.username || '');
+      if (email !== state.email) {
+        localStorage.setItem('email', action.payload.email || '');
       }
 
       Object.assign(state, action.payload);
