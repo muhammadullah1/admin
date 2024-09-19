@@ -11,3 +11,11 @@ export interface Product {
   updatedAt: string; // ISO date string
   __v: number;       // Version number
 }
+
+export interface ProductPayload {
+  title: string;
+  description: string;
+  price: number;
+  categoryId: string;
+  images: string[];
+}

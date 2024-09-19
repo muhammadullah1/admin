@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import { Button, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ProductList from './productList';
-import './index.less';
 
 const ProductIndexPage: FC = () => {
   const navigate = useNavigate();

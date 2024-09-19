@@ -3,6 +3,7 @@ import { message as $message } from 'antd';
 import axios from 'axios';
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
+const token = localStorage.getItem('t');
 
 const axiosInstance = axios.create({
   timeout: 6000,
@@ -85,12 +86,18 @@ export const request = <T = any>(
   config?: AxiosRequestConfig,
 ): MyResponse => {
 
+  const headers: { [key: string]: string; } = {
+    'Content-Type': 'application/json',
+  };
+  headers.Authorization = `${token}`;
+
   if (method === 'post') {
-    return axiosInstance.post(url, data, config);
+    return axiosInstance.post(url, data, { ...config, headers });
   } else {
     return axiosInstance.get(url, {
       params: data,
       ...config,
+      headers,
     });
   }
 };
